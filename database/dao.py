@@ -28,13 +28,15 @@ class DAO:
         return results
         #lista di oggetti di tipo fermata
 
+
     @staticmethod
-    def read_all_connessioni():
+    def read_all_connessioni(anno):
         conn = DBConnect.get_connection()
         results = []
         cursor = conn.cursor(dictionary = True)
-        query = "SELECT * FROM connessione "
-        cursor.execute(query)
+        query = ("SELECT * FROM connessione"
+                 "WHERE anno <= %s ")
+        cursor.execute(query,(anno,))
         for row in cursor:
             connessione = Connessione(row["id"], row["id_rifugio1"], row["id_rifugio2"],
                            row["distanza"], row["difficolta"],
